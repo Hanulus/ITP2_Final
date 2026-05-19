@@ -67,6 +67,12 @@ class LibraryManager:
         """Return a set of unique genres across all books."""
         return set(map(lambda b: b.genre, self.books))
 
+    def get_stats(self) -> tuple:
+        """Return library stats as a tuple: (total, available, borrowed)."""
+        total = len(self.books)
+        available = sum(1 for b in self.books if b.is_available)
+        return (total, available, total - available)
+
     def export_csv(self, filepath: str) -> None:
         """Export all books to a CSV file."""
         os.makedirs(os.path.dirname(filepath), exist_ok=True)

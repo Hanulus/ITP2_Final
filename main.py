@@ -1,3 +1,5 @@
+import random
+
 from library.manager import LibraryManager
 from library.models.book import Book
 from library.models.member import Member
@@ -23,6 +25,7 @@ def print_menu():
     print("8.  View available books")
     print("9.  Export books to CSV")
     print("10. View unique genres")
+    print("11. View library stats")
     print("0.  Exit")
 
 
@@ -71,7 +74,8 @@ def search_books():
 def add_member():
     print("\n-- Add New Member --")
     name = input("Name: ").strip()
-    member_id = input("Member ID: ").strip()
+    suggested_id = f"M{random.randint(1000, 9999)}"
+    member_id = input(f"Member ID (suggested: {suggested_id}): ").strip() or suggested_id
 
     while True:
         email = input("Email: ").strip()
@@ -137,6 +141,15 @@ def view_genres():
         print(f"  {genre}")
 
 
+def view_stats():
+    total, available, borrowed = manager.get_stats()  # unpack tuple
+    print("\n-- Library Stats --")
+    print(f"  Total books:     {total}")
+    print(f"  Available:       {available}")
+    print(f"  Borrowed:        {borrowed}")
+    print(f"  Total members:   {len(manager.members)}")
+
+
 def main():
     actions = {
         "1": add_book,
@@ -149,6 +162,7 @@ def main():
         "8": view_available,
         "9": export_csv,
         "10": view_genres,
+        "11": view_stats,
     }
 
     while True:
